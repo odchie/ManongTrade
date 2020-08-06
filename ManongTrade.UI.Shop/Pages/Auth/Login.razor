@@ -1,0 +1,65 @@
+﻿@page "/auth/login"
+
+@using ManongTrade.UI.Shop.Models
+@using ManongTrade.UI.Shop.Models.Api
+@inject ManongTrade.UI.Shop.Services.AuthenticationService authService
+@inject ILocalStorageService localStorage
+@inject AuthenticationStateProvider authProvider
+@inject NavigationManager navigationManager
+
+<h3>Login here</h3>
+<EditForm Model="model" OnValidSubmit="CheckLogin">
+    <RadzenCard>
+        <AlertMessage Message="@message" MessageType="@messageType" />
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <label>Username</label><RadzenTextBox @bind-Value="model.Username" />
+        <br />
+        <RadzenButton ButtonType="Radzen.ButtonType.Submit" class="btn-block mr-2" Disabled="isBusy" ButtonStyle="Radzen.ButtonStyle.Primary" Text="Login" />
+        <br />
+        <div class="container text-center">Or <RadzenLink Text="register here" Path="/auth/register" /></div>
+    </RadzenCard>
+</EditForm>
+
+@code
+{
+    LoginModel model = new LoginModel();
+    AlertMessageType messageType = AlertMessageType.Success;
+    string message = string.Empty;
+    bool isBusy = false;
+
+    private async Task CheckLogin()
+    {
+        isBusy = true;
+
+        ApiResponseModel<CustomerModel> apiResponse = await authService.CheckLogin(model.Username);
+        if (apiResponse.IsOk)
+        {
+            await localStorage.SetItemAsync("ManongUser", apiResponse.ReturnObject);
+            await authProvider.GetAuthenticationStateAsync();
+            navigationManager.NavigateTo("/");
+        }
+        else
+        {
+            message = apiResponse.Message;
+            messageType = AlertMessageType.Warning;
+            //navigationManager.NavigateTo("/auth/login");
+        }
+
+
+        //if (cust == null)
+        //{
+        //    message = "Not found";
+        //    messageType = AlertMessageType.Warning;
+        //}
+        //else
+        //{
+        //    await localStorage.SetItemAsync("ManongUser", cust);
+        //    await authProvider.GetAuthenticationStateAsync();
+        //    navigationManager.NavigateTo("/");
+        //}
+
+        isBusy = false;
+    }
+}

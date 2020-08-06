@@ -1,0 +1,31 @@
+﻿@inherits LayoutComponentBase
+
+<RadzenHeader Style="background-color: #f8f9fa">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-dark border-bottom box-shadow mb-0">
+
+        <div class="container-fluid">
+            <div class="navbar-brand">
+                <a href="index.html" class="navbar-brand text-warning">Manong Online Shop</a>
+            </div>
+            <div class="container d-flex justify-content-end">
+                <RadzenLink class="text-white ml-4" Path="button" Text="Cart" Icon="add_shopping_cart" />
+                <div style="margin-right:40px"></div>
+                <AuthorizeView>
+                    <Authorized>
+                        <RadzenLink class="text-white ml-4" Path="/auth/account" Text="Account" Icon="account_box" />
+                        <RadzenLink class="text-white ml-4" Path="/auth/logout" Text="Logout" />
+                    </Authorized>
+                    <NotAuthorized>
+                        <RadzenLink class="text-white ml-4" Path="/auth/login" Text="Login" />
+                        <RadzenLink class="text-white ml-4" Path="/auth/register" Text="Register" />
+                    </NotAuthorized>
+                </AuthorizeView>
+            </div>
+        </div>
+    </nav>
+</RadzenHeader>
+<RadzenContent Style="margin-top:70px; margin-left:18px">
+    <div class="container">
+        @Body
+    </div>
+</RadzenContent>

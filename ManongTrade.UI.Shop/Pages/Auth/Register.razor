@@ -1,0 +1,33 @@
+﻿@page "/auth/register"
+@inject NavigationManager navManager
+@using ManongTrade.UI.Shop.Models
+
+<h3>Register here</h3>
+<EditForm Model="model">
+    <RadzenCard>
+        <AlertMessage Message="@message" MessageType="@messageType" />
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <label>Username</label><RadzenTextBox @bind-Value="model.Username" />
+        <label>First name</label><RadzenTextBox @bind-Value="model.Firstname" />
+        <label>Last name</label><RadzenTextBox @bind-Value="model.Lastname" />
+        <br />
+        <RadzenButton ButtonType="Radzen.ButtonType.Submit" class="btn-block mr-2" Disabled="isBusy" ButtonStyle="Radzen.ButtonStyle.Primary" Text="Register" />
+        <br />
+        <div class="container text-center">Or <RadzenLink Text="login here" Path="/auth/login" /></div>
+    </RadzenCard>
+</EditForm>
+
+@code
+{
+    AlertMessageType messageType = AlertMessageType.Success;
+    CustomerModel model = new CustomerModel();
+    string message = string.Empty;
+    bool isBusy = false;
+
+    void GoToLogin()
+    {
+        navManager.NavigateTo("/auth/login");
+    }
+}
